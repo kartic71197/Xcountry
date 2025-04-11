@@ -17,7 +17,7 @@ function App() {
       const response = await axios.get('https://xcountries-backend.azurewebsites.net/all');
       setCountries(response.data);
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching data:'.error);
     }
   }
 
