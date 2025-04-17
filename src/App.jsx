@@ -42,12 +42,12 @@ function App() {
         {filteredCountries.map((country, index) => (
           <div
             key={index}
-            className="flex flex-col items-center justify-center border border-gray-300 p-4 m-2"
+            className="countryCard flex flex-col items-center justify-center border border-gray-300 p-4 m-2"
           >
             <div className="flex flex-row">
               <img src={country.png} alt={country.common} className="w-10 h-10" />
             </div>
-            <h1 className="text-normal font-semibold text-balance">{country.common}</h1>
+            <h2 className="text-normal font-semibold text-balance">{country.common}</h2>
           </div>
         ))}
       </div>
