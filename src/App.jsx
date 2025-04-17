@@ -1,44 +1,58 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
-
   const [countries, setCountries] = useState([]);
-  
-  useEffect(()=>{
-    fetchCountries();
-  })
+  const [filteredCountries, setFilteredCountries] = useState([]);
 
-  const fetchCountries = async () =>{
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  const fetchCountries = async () => {
     try {
-      const response = await axios.get('https://xcountries-backend.azurewebsites.net/all');
+      const response = await axios.get('https://countries-search-data-prod-812920491762.asia-south1.run.app/countries');
       setCountries(response.data);
-    }catch (error) {
-        console.error(`Error fetching data: ${error.message}`);
-      }
-  }
+      setFilteredCountries(response.data); 
+    } catch (error) {
+      console.error(`Error fetching data: ${error.message}`);
+    }
+  };
+
+  const filterData = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filtered = countries.filter((country) =>
+      country.common.toLowerCase().includes(searchTerm)
+    );
+    setFilteredCountries(filtered);
+  };
 
   return (
     <>
-      <div className='border border-b-2 flex flex-wrap'>
-        {
-          countries.map((country,index)=>{
-            return (
-                <div key={index} className="flex flex-col items-center justify-center border border-gray-300 p-4 m-2">
-                  <div className='flex flex-row'>
-                    <img src={country.flag} alt={country.name} className='w-10 h-10' />
-                  </div>
-                  <h1 className='text-normal font-semibold text-balance'>{country.name}</h1>
-                </div>
-            )
-          })
-        }
+      <div>
+        <input
+          type="text"
+          onChange={filterData}
+          placeholder="Search countries..."
+          className="border p-2 m-4"
+        />
+      </div>
+      <div className="border border-b-2 flex flex-wrap">
+        {filteredCountries.map((country, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center justify-center border border-gray-300 p-4 m-2"
+          >
+            <div className="flex flex-row">
+              <img src={country.png} alt={country.common} className="w-10 h-10" />
+            </div>
+            <h1 className="text-normal font-semibold text-balance">{country.common}</h1>
+          </div>
+        ))}
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
